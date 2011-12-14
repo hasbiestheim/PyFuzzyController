@@ -4,7 +4,7 @@ class Shape:
         self.points = []
         self.x = None
         self.area = None
-        self.sortedPoints = False
+        self.sortedPoints = True
         self.solved = False
     def addPoint(self,(x,y)):
         self.points.append((x,y))
@@ -21,10 +21,12 @@ class Shape:
                 self.sortedPoints = False
                 break
         self.solved = False
-    def solve(self):
+    def sortPoints(self):
         if not self.sortedPoints:
             self.points = sorted(self.points,key=itemgetter(0))
             self.sortedPoints = True
+    def solve(self):
+        self.sortPoints()
         p = self.points
         self.x = 0
         self.area = 0
