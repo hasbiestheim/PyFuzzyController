@@ -3,5 +3,12 @@ by Johan Nestaas
 johannestaas@gmail.com
 
 Alpha!
-Centroid.addPoint((x,y)) works
 
+planned usage:
+1. define features of input
+2. define each features membership functions
+3. define output variables
+4. define output variables membership functions
+5. define rules
+6. output = fuzzy(input)
+BAM done
