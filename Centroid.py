@@ -1,13 +1,30 @@
+from operator import itemgetter
 class Centroid:
     def __init__(self):
         self.points = []
         self.x = None
         self.area = None
+        self.sortedPoints = False
         self.solved = False
     def addPoint(self,(x,y)):
         self.points.append((x,y))
+        if len(self.points)>=2 and x<self.points[-2]:
+           self.sortedPoints = False
+        self.solved = False
+    def setPoints(self,p):
+        self.points = p
+        self.sortedPoints = True
+        for i in range(0,len(p)-1):
+            x1,y1 = p[i]
+            x2,y2 = p[i+1]
+            if x2<x1:
+                self.sortedPoints = False
+                break
         self.solved = False
     def solve(self):
+        if not self.sortedPoints:
+            self.points = sorted(self.points,key=itemgetter(0))
+            self.sortedPoints = True
         p = self.points
         self.x = 0
         self.area = 0
