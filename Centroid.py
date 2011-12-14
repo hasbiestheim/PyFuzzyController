@@ -30,7 +30,7 @@ class Centroid:
                     self.area = self.area + a
                     self.x = self.x + (a*(x2-(h/3)))
                 if v<0:
-                    a = -1*h*y/2
+                    a = h*y/2
                     self.area = self.area + a
                     self.x = self.x + (a*(x1+(h/3)))
                 if v==0:
