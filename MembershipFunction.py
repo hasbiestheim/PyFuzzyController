@@ -1,3 +1,5 @@
+from Shape import Shape
+
 class MembershipFunction:
     def __init__(self):
         self.name = 'InitMF'
@@ -12,6 +14,7 @@ class MembershipFunction:
         self.f.setPoints([(a,0),(b,1),(c,0)])
         self.f.sortPoints()
         self.shape = 'tri'
+        self.points = (a,b,c)
     def getResult(self,deg):
         if deg == 1.0:
             f = Shape()
