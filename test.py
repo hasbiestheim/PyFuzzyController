@@ -39,6 +39,9 @@ class TestShape(unittest.TestCase):
         self.assertEqual(self.mftri.getResult(0.5).points,[(0,0),(1,0.5),(3,0.5),(4,0)])
     def test_resultTrap(self):
         self.assertEqual(self.mftrap.getResult(0.5).points,[(0,0),(1,0.5),(5,0.5),(6,0)])
-
+    def test_getDegreeTrap(self):
+        self.assertEqual(self.mftrap.getDegree(1),0.5)
+    def test_getDegreeTri(self):
+        self.assertEqual(self.mftri.getDegree(3),0.5)
 if __name__ == '__main__':
     unittest.main()

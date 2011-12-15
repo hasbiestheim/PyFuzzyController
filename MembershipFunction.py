@@ -15,6 +15,32 @@ class MembershipFunction:
         self.f.sortPoints()
         self.shape = 'tri'
         self.points = (a,b,c)
+    def getDegree(self,inp):
+        inp = float(inp)
+        if self.shape == 'trap':
+            (a,b,c,d) = self.points
+            if inp < a:
+                return 0
+            if inp < b:
+                p = (inp-a)/(b-a)
+                return p
+            if inp < c:
+                return 1
+            if inp < d:
+                p = (d-inp)/(d-c)
+                return p
+            return 0
+        if self.shape == 'tri':
+            (a,b,c) = self.points
+            if inp < a:
+                return 0
+            if inp < b:
+                p = (inp-a)/(b-a)
+                return p
+            if inp < c:
+                p = (c-inp)/(c-b)
+                return p
+            return 0
     def getResult(self,deg):
         if deg == 1.0:
             f = Shape()
