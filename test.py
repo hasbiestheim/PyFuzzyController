@@ -2,6 +2,7 @@
 import unittest
 from Shape import Shape
 from MembershipFunction import MembershipFunction
+from Ruleset import Rule
 
 class TestShape(unittest.TestCase):
     def setUp(self):
@@ -12,6 +13,16 @@ class TestShape(unittest.TestCase):
         self.mftri.tri(0,2,4)
         self.mftrap = MembershipFunction()
         self.mftrap.trap(0,2,4,6)
+        self.mfout = MembershipFunction()
+        self.mfout.tri(4,6,8)
+        self.mfcold = MembershipFunction()
+        self.mfcold.trap(0,0,2,4)
+        self.mfdict = {}
+        self.mfdict['cold'] = self.mfcold
+        self.mfdict['blast'] = self.mfout
+        self.rule = Rule(self.mfdict)
+        self.cin = {}
+        self.cin['temp']=3
     def test_addPoint_presentationValue(self):
         p = [(20,0),(34,0.7),(46,0.7),(54,0.3),(66,0.3),(70,0.5),(100,0.5)]
         for point in p:
@@ -43,5 +54,11 @@ class TestShape(unittest.TestCase):
         self.assertEqual(self.mftrap.getDegree(1),0.5)
     def test_getDegreeTri(self):
         self.assertEqual(self.mftri.getDegree(3),0.5)
+    def test_heaterRule(self):
+        self.rule.addCondition('temp', 'cold')
+        self.rule.setResult('heater','blast')
+        (feat, shape) = self.rule.getResult(self.cin)
+        shape.solve()
+        self.assertEqual(shape.x, 6)
 if __name__ == '__main__':
     unittest.main()
