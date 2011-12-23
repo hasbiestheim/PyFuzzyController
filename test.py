@@ -1,8 +1,8 @@
 #!/usr/bin/python
 import unittest
-from Shape import Shape
-from MembershipFunction import MembershipFunction
-from Ruleset import Rule
+from Shape import *
+from MembershipFunction import *
+from Ruleset import *
 
 class TestShape(unittest.TestCase):
     def setUp(self):
@@ -60,5 +60,13 @@ class TestShape(unittest.TestCase):
         (feat, shape) = self.rule.getResult(self.cin)
         shape.solve()
         self.assertEqual(shape.x, 6)
+    def test_intersects(self):
+        s1 = Segment((0,0),(1,1))
+        s2 = Segment((0,1),(1,0))
+        self.assertTrue(s1.intersects(s2))
+    def test_noIntersect(self):
+        s1 = Segment((0,0),(1,1))
+        s2 = Segment((0,1),(2,3))
+        self.assertTrue(not s1.intersects(s2))
 if __name__ == '__main__':
     unittest.main()
