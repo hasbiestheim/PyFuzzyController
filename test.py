@@ -68,5 +68,26 @@ class TestShape(unittest.TestCase):
         s1 = Segment((0,0),(1,1))
         s2 = Segment((0,1),(2,3))
         self.assertTrue(not s1.intersects(s2))
+    def test_intersect1(self):
+        s1 = Segment((0,0),(1,1))
+        s2 = Segment((0,1),(1,0))
+        self.assertEqual(s1.intersection(s2), (0.5,0.5))
+    def test_intersect2(self):
+        s1 = Segment((1,3),(3,1))
+        s2 = Segment((1,1),(3,3))
+        self.assertEqual(s1.intersection(s2), (2.0,2.0))
+    def test_addSegment(self):
+        s = Shape()
+        s.addSegment(Segment((0,0),(1,1)))
+        s.addSegment(Segment((1,1),(2,2)))
+        s.addSegment(Segment((2,2),(3,0)))
+        self.assertEqual(s.points, [(0,0),(1,1),(2,2),(3,0)])
+    def test_addShapes(self):
+        s1 = Shape()
+        s1.setPoints([(0,0),(1,1),(2,1),(3,0)])
+        s2 = Shape()
+        s2.setPoints([(2,0),(4,2),(5,0)])
+        s3 = s1+s2
+        self.assertEqual(s3.points, [(0,0),(1,1),(2,1),(2.5,0.5),(4,2),(5,0)])
 if __name__ == '__main__':
     unittest.main()

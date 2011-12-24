@@ -36,9 +36,35 @@ class Segment:
             s2.x2 = s1.x2
         b1 = s1.y1 < s2.y1
         b2 = s1.y2 > s2.y2
+        if s1.y1 == s2.y1 or s1.y2 == s2.y2:
+            return False
         if b1 == b2:
             return True
         return False
+    def intersection(self,other):
+        if not self.intersects(other):
+            return None
+        row1 = [self.m, -1, 0-self.b]
+        row2 = [other.m, -1, 0-other.b]
+        row1[0] = 1.0
+        row1[1] = float(row1[1])/self.m
+        row1[2] = float(row1[2])/self.m
+        row2[1] = float(row2[1])/other.m
+        row2[2] = float(row2[2])/other.m
+        row2[0] = 0.0
+        row2[1] = row2[1]-row1[1]
+        row2[2] = row2[2]-row1[2]
+        row2[2] = row2[2]/row2[1]
+        row2[0] = 0.0
+        row2[1] = 1.0
+        row1[0] = row1[0]/row1[1]
+        row1[2] = row1[2]/row1[1]
+        row1[1] = 0.0
+        row1[2] = row1[2] - row2[2]
+        row1[2] = row1[2] / row1[0]
+        return (row1[2], self.y(row1[2]))
+    def clone(self):
+        return Segment(self.p[0],self.p[1])
 
 class Shape:
     def __init__(self):
@@ -49,9 +75,16 @@ class Shape:
         self.solved = False
         self.segments = []
     def __add__(self,other):
-        return self
+        result = Shape()
+        if not (self.sortedPoints and other.sortedPoints):
+            return None
+        s1 = self.cloneSegments()
+        s2 = other.cloneSegments()
+        while len(s1)>0 and len(s2)>0:
+            return result
+        return result
     def addPoint(self,(x,y)):
-        self.points.append((x,y))
+        self.points.append((float(x),float(y)))
         if len(self.points)>=2 and x<self.points[-2]:
             self.segments = []
             self.sortedPoints = False
@@ -67,9 +100,12 @@ class Shape:
         for i in range(0,len(p)-1):
             x1,y1 = p[i]
             x2,y2 = p[i+1]
+            p[i] = (float(x1),float(y1))
             if x2<x1:
                 self.sortedPoints = False
                 break
+        x,y = p[-1]
+        p[-1] = (float(x),float(y))
         if self.sortedPoints:
             for i in range(0,len(self.points)-1):
                 x1,y1 = self.points[i]
@@ -77,6 +113,20 @@ class Shape:
                 if x1 != x2:
                     self.segments.append(Segment(self.points[i],self.points[i+1]))
         self.solved = False
+    def addSegment(self,s):
+        good1 = True
+        good2 = True
+        for p in self.points:
+            if p == s.p[0]:
+                good1 = False
+            if p == s.p[1]:
+                good2 = False
+            if not (good1 or good2):
+                break
+        if good1:
+            self.addPoint(s.p[0])
+        if good2:
+            self.addPoint(s.p[1])
     def sortPoints(self):
         if not self.sortedPoints:
             self.segments = []
@@ -87,6 +137,11 @@ class Shape:
                 if x1 != x2:
                     self.segments.append(Segment(self.points[i],self.points[i+1]))
             self.sortedPoints = True
+    def cloneSegments(self):
+        r = []
+        for s in self.segments:
+            r.append(s.clone())
+        return r
     def solve(self):
         self.sortPoints()
         p = self.points
