@@ -11,14 +11,34 @@ class Segment:
         self.y2 = float(y2)
         self.m = (self.y2-self.y1)/(self.x2-self.x1)
         self.b = self.y1 - (self.m*self.x1)
+    def y(self, x):
+        return x*self.m + self.b
     def intersects(self,other):
         if self.m == other.m:
             return False
         if self.x2 <= other.x1:
             return False
-        if self.x1 >= other.x2:
+        if other.x2 <= self.x1:
             return False
-
+        s1 = Segment(self.p[0], self.p[1])
+        s2 = Segment(other.p[0], other.p[1])
+        if s1.x1 < s2.x1:
+            s1.y1 = s1.y(s2.x1)
+            s1.x1 = s2.x1
+        if s1.x2 > s2.x2:
+            s1.y2 = s1.y(s2.x2)
+            s1.x2 = s2.x2
+        if s2.x1 < s1.x1:
+            s2.y1 = s2.y(s1.x1)
+            s2.x1 = s1.x1
+        if s2.x2 > s1.x2:
+            s2.y2 = s2.y(s1.x2)
+            s2.x2 = s1.x2
+        b1 = s1.y1 < s2.y1
+        b2 = s1.y2 > s2.y2
+        if b1 == b2:
+            return True
+        return False
 
 class Shape:
     def __init__(self):
