@@ -63,6 +63,16 @@ class Segment:
         row1[2] = row1[2] - row2[2]
         row1[2] = row1[2] / row1[0]
         return (row1[2], self.y(row1[2]))
+    def within(self, other):
+        if other.x1 <= self.x2 and other.x1 >= self.x1:
+            return True
+        if other.x2 <= self.x2 and other.x2 >= self.x1:
+            return True
+        if self.x1 <= other.x2 and self.x1 >= other.x1:
+            return True
+        if self.x2 <= other.x2 and self.x2 >= other.x1:
+            return True
+        return False
     def clone(self):
         return Segment(self.p[0],self.p[1])
 
@@ -80,7 +90,9 @@ class Shape:
             return None
         s1 = self.cloneSegments()
         s2 = other.cloneSegments()
+        least = s1[0]
         while len(s1)>0 and len(s2)>0:
+            
             return result
         return result
     def addPoint(self,(x,y)):
@@ -175,3 +187,10 @@ class Shape:
                     self.x = self.x + (a*(x1+(h/2)))
         self.x = self.x/self.area
         self.solved = True
+
+if __name__ == '__main__':
+    s1 = Shape()
+    s2 = Shape()
+    s1.setPoints([(0,0),(1,1),(2,0)])
+    s2.setPoints([(0.5,0),(2,2),(3,0)])
+    s = s1 + s2
