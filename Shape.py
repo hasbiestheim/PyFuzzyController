@@ -88,13 +88,14 @@ class Shape:
         result = Shape()
         if not (self.sortedPoints and other.sortedPoints):
             return None
-        s1 = self.cloneSegments()
-        s2 = other.cloneSegments()
-        least = s1[0]
-        while len(s1)>0 and len(s2)>0:
-            
-            return result
-        return result
+        segments1 = self.cloneSegments()
+        segments2 = other.cloneSegments()
+        segments = []
+        #TODO while(
+        for s1 in segments1:
+            for s2 in segments2:
+                if s1.intersects(s2):
+
     def addPoint(self,(x,y)):
         self.points.append((float(x),float(y)))
         if len(self.points)>=2 and x<self.points[-2]:
